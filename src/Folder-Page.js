@@ -19,7 +19,7 @@ class FolderPage extends React.Component {
         />
       );
     });
-    return <div>{notes}</div>;
+    return <div>{notes.length ? notes : 'Nothing was Found.'}</div>;
   }
 }
 

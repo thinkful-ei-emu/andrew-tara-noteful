@@ -10,6 +10,7 @@ import NoteSidebar from './Note-Sidebar';
 import FolderPage from './Folder-Page';
 import Main from './Main';
 import Sidebar from './Sidebar';
+import NotFound from './Not-Found';
 
 class App extends React.Component {
   constructor(props) {
@@ -33,10 +34,10 @@ class App extends React.Component {
         <Header />
         <Sidebar>
           <Switch>
-            <Route path='/note/:noteId' render={({history}) => {
+            <Route path='/note/:noteId' render={({ history }) => {
               return <NoteSidebar
                 history={history} />
-            } }/> 
+            }} />
             <Route path='/'
               render={() => {
                 return (
@@ -50,25 +51,32 @@ class App extends React.Component {
         </Sidebar>
         <Main>
           <Switch>
-            <Route path='/note/:noteId' render={({match, history}) => {
-              return <NotePage 
-                match={match}
-                history={history}
-                notes={this.state.notes}
+            <Route path='/note/:noteId'
+              render={({ match, history }) => {
+                return <NotePage
+                  match={match}
+                  history={history}
+                  notes={this.state.notes}
                 />;
-            }} />
-            <Route path='/folder/:folderId' render={({match})=> {
-            return <FolderPage 
-              match={match}
-              folders={this.state.folders}
-              notes={this.state.notes} />}} /> 
-            <Route path='/'
-              render={() => <MainPage
+              }}
+            />
+            <Route path='/folder/:folderId'
+              render={({ match }) => {
+                return <FolderPage
+                  match={match}
+                  folders={this.state.folders}
+                  notes={this.state.notes} />
+              }}
+            />
+            <Route exact path='/'
+              render={() => {
+                return <MainPage
                   notes={this.state.notes}
                   folders={this.state.folders}
                 />
-              }
+              }}
             />
+            <Route component={NotFound} />
           </Switch>
         </Main>
 
