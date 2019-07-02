@@ -1,19 +1,26 @@
 import React from 'react';
 import NoteThumbnail from './note-thumbnail';
 
-function FolderPage(props) {
-  const notes = props.notes.map(note => {
-    return (
-      <NoteThumbnail
-        key={note.id}
-        noteId={note.id}
-        modified={note.modified}
-        name={note.name}
-      />
-    );
-  });
+class FolderPage extends React.Component {
+  
+  render() {
+    const folderId = this.props.match.params.folderId;
+    const filteredNotes = this.props.notes.filter(note => {
+      return note.folderId===folderId;
+    });
 
-  return <div>{notes}</div>;
+    const notes = filteredNotes.map(note => {
+      return (
+        <NoteThumbnail
+          key={note.id}
+          noteId={note.id}
+          modified={note.modified}
+          name={note.name}
+        />
+      );
+    });
+    return <div>{notes}</div>;
+  }
 }
 
 export default FolderPage;

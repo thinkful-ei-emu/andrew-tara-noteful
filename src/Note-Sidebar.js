@@ -1,7 +1,13 @@
 import React from 'react';
 
-function NoteSidebar(props) {
-  return <div className='note-sidebar'>Note Sidebar</div>;
+export default function NoteSidebar(props) {
+  return (
+    <div className='note-sidebar'>
+      <button onClick={() => {
+        return props.history.goBack();
+      }}>
+        Go Back
+      </button>
+    </div>
+  );
 }
-
-export default NoteSidebar

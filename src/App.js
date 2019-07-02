@@ -6,7 +6,10 @@ import Header from './Header';
 import MainPage from './Main-Page';
 import NotePage from './Note-Page';
 import MainSidebar from './Main-Sidebar';
-import NoteSidebar from './Note-Sidebar'
+import NoteSidebar from './Note-Sidebar';
+import FolderPage from './Folder-Page';
+import Main from './Main';
+import Sidebar from './Sidebar';
 
 class App extends React.Component {
   constructor(props) {
@@ -28,34 +31,47 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header />
-        
-        <Switch>
-          <Route path='/note/:noteId' component={NoteSidebar} />
-          <Route path='/'
-            render={() => {
-              return (
-                <MainSidebar
-                  setCurrentFolder={this.setCurrentFolder}
+        <Sidebar>
+          <Switch>
+            <Route path='/note/:noteId' render={({history}) => {
+              return <NoteSidebar
+                history={history} />
+            } }/> 
+            <Route path='/'
+              render={() => {
+                return (
+                  <MainSidebar
+                    setCurrentFolder={this.setCurrentFolder}
+                    folders={this.state.folders}
+                  />
+                );
+              }} />
+          </Switch>
+        </Sidebar>
+        <Main>
+          <Switch>
+            <Route path='/note/:noteId' render={({match, history}) => {
+              return <NotePage 
+                match={match}
+                history={history}
+                notes={this.state.notes}
+                />;
+            }} />
+            <Route path='/folder/:folderId' render={({match})=> {
+            return <FolderPage 
+              match={match}
+              folders={this.state.folders}
+              notes={this.state.notes} />}} /> 
+            <Route path='/'
+              render={() => <MainPage
+                  notes={this.state.notes}
                   folders={this.state.folders}
                 />
-              );
-            }} />
-        </Switch>
+              }
+            />
+          </Switch>
+        </Main>
 
-        <Switch>
-          <Route path='/note/:noteId' component={NotePage} />
-          <Route path='/'
-            render={() => {
-              const notes = this.state.currentFolder ?
-                this.state.notes.filter(note => note.folderId === this.state.currentFolder) :
-                this.state.notes;
-              return <MainPage
-                notes={notes}
-                folders={this.state.folders}
-              />
-            }}
-          />
-        </Switch>
       </div>
     );
   }
